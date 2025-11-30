@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button"
+"use client"
+import { Button } from "../../components/ui/button"
 import {
   Card,
   CardAction,
@@ -7,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "../../components/ui/card"
 
 import {
   Select,
@@ -15,13 +16,42 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "../../components/ui/select"
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Input } from "../../components/ui/input"
+import { Label } from "../../components/ui/label"
 import Link from "next/link"
+import { useState } from "react"
+import axios from "axios"
+import {useRouter} from "next/navigation"
 
-export default function CardDemo() {
+export default function Signup() {
+
+  const router = useRouter();
+
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
+
+    const signupReq = async() => {
+      console.log(name, password, email, role, address)
+      const response = await axios.post(`/api/auth/signup`, {email, name, address, role, password});
+
+      if(response){
+        const token = response.data.token;
+        console.log(response.data);
+        localStorage.setItem('token', token);
+       
+        if(response.data.role === "USER"){
+          router.push('/user-dashboard')
+        }else{
+          router.push('/store-owner')
+        }
+      }
+    }
+
   return (
   <div className="flex justify-center h-screen align-center items-center">
 
@@ -39,6 +69,8 @@ export default function CardDemo() {
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 type="email"
                 placeholder="john@doe.com"
@@ -48,6 +80,8 @@ export default function CardDemo() {
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
               <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 id="name"
                 type="text"
                 placeholder="John doe"
@@ -57,9 +91,11 @@ export default function CardDemo() {
             <div className="grid gap-2">
               <Label htmlFor="address">Address</Label>
               <Input
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
                 id="address"
                 type="address"
-                placeholder="sector 1 hsr layout"
+                placeholder="Enter your address"
                 required
               />
             </div>
@@ -68,10 +104,11 @@ export default function CardDemo() {
                 <Label htmlFor="password">Password</Label>
                 
               </div>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" required placeholder="Enter a password"  value={password}
+                onChange={(e) => setPassword(e.target.value)}/>
             </div>
              <div>
-               <Select>
+               <Select onValueChange={(value) => setRole(value)} >
                  <SelectTrigger className="w-[180px] flex">
                  <SelectValue placeholder="Select Role"/>
                  </SelectTrigger>
@@ -85,7 +122,7 @@ export default function CardDemo() {
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button variant={"saas"} type="submit" className="w-full">
+        <Button onClick={signupReq} variant={"saas"} type="submit" className="w-full">
           Signup
         </Button>
          <div className="flex gap-2">

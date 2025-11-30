@@ -1,3 +1,5 @@
+"use client"
+import axios from "axios";
 import {
   Table,
   TableBody,
@@ -7,101 +9,56 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "../../../components/ui/table"
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { useEffect, useState } from "react"
 
-
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-]
+interface UserProp{
+  id: number,
+  name: string,
+  email: string,
+  createdAt: string
+}
 
 export default function UserTable() {
-  return (
-   
-    <Accordion type="single" collapsible className="w-full mx-10">
-  <AccordionItem value="item-1" className="bg-emerald-50">
-    <AccordionTrigger>Is it accessible?</AccordionTrigger>
-    <AccordionContent>
-      
-        <Table>
+  const [data, setData] = useState<UserProp[]>([]);
+
+  const fetchUsers = async() => {
+    const response = await axios.get('/api/users');
+
+    if(response){
+      setData(response.data);
+    }
+  }
+
+  useEffect(() => {
+    fetchUsers();
+  }, [])
+
+  return (   
+    <div className="mx-10 w-full bg-white text-black">
+         <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead className="font-medium">Id</TableHead>
+          <TableHead className="font-medium">Name</TableHead>
+          <TableHead className="font-medium">Email</TableHead>
+          <TableHead className="font-medium">CreatedAt</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+        {data.map((user) => (
+          <TableRow key={user.id}>
+            <TableCell className="font-medium">{user.id}</TableCell>
+            <TableCell className="font-medium">{user.name}</TableCell>
+            <TableCell className="font-medium">{user.email}</TableCell>
+            <TableCell className="font-medium">{user.createdAt}</TableCell>
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
     </Table>
-
-    </AccordionContent>
-  </AccordionItem>
-</Accordion>
-
-  
+    </div>
+      
   )
 }

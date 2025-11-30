@@ -1,4 +1,6 @@
-import { Button } from "@/components/ui/button"
+"use client"
+import { useState } from "react"
+import { Button } from "../../components/ui/button"
 import {
   Card,
   CardAction,
@@ -7,13 +9,37 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { div } from "motion/react-client"
+} from "../../components/ui/card"
+import { Input } from "../../components/ui/input"
+import { Label } from "../../components/ui/label"
 import Link from "next/link"
+import axios from "axios"
+import { useRouter } from "next/navigation"
 
-export default function CardDemo() {
+export default function Login() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginReq = async() => {
+      const response = await axios.post('/api/auth/login', {email, password});
+
+      if(response){
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+
+        if(response.data.role == "USER"){
+          router.push('/user-dashboard')
+        }else if(response.data.role === "ADMIN"){
+          router.push('/admin-dashboard')
+        }
+        else{
+          router.push('/store-owner')
+        }
+      }
+  }
+
   return (
     <div className="flex justify-center h-screen align-center items-center">
 
@@ -30,6 +56,8 @@ export default function CardDemo() {
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 type="email"
                 placeholder="m@example.com"
@@ -41,13 +69,13 @@ export default function CardDemo() {
                 <Label htmlFor="password">Password</Label>
                
               </div>
-              <Input id="password" type="password" required />
+              <Input value={password} onChange={(e) => setPassword(e.target.value)} id="password" type="password" required />
             </div>
           </div>
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button  variant={'saas'} type="submit" className="w-full">
+        <Button onClick={loginReq}  variant={'saas'} type="submit" className="w-full">
           Login
         </Button>
         <div className="flex gap-2">

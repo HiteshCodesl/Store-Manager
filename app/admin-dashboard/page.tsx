@@ -1,13 +1,25 @@
-import { Button } from "@/components/ui/button";
+"use client"
+import { Button } from "../../components/ui/button";
 import Sidebar from "./components/app-sidebar";
-import { Input } from "@/components/ui/input";
+import { Input } from "../../components/ui/input";
 import { CardHoverEffectDemo } from "./components/analytic-cards";
 import UserTable from "./components/user-table";
-import AdminTable from "./components/admin-table";
 import StoreTable from "./components/store-table";
-import { Label } from "@/components/ui/label";
+import { Label } from "../../components/ui/label";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+   
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if(token){
+      setIsAuthenticated(true);
+    }
+  }, [])
+
   return (
     <div className="bg-[#0a0a0a] w-screen  h-[210vh] flex">
       <div className="p-4  border-r w-[15vw] h-[210vh]">
@@ -20,7 +32,21 @@ export default function Dashboard() {
               <Input placeholder="Search" className="text-white"/>
            </div>
            <div className="">
-              <Button variant={'saas'}>Logout</Button>
+
+            {isAuthenticated ?
+              <Button onClick={() => {
+                localStorage.removeItem('token');
+                setIsAuthenticated(false);
+                router.push('/');
+              }} variant={'saas'}>Logout</Button>
+              :
+              <Button 
+              variant={'saas'} 
+              onClick={() => router.push('/login')}>
+                Login
+              </Button>
+            }
+
            </div>
           </div>
 
@@ -33,8 +59,6 @@ export default function Dashboard() {
             <StoreTable />
             <Label className="text-xl font-semibold text-fuchsia-500 mx-auto ">List of Users</Label>
              <UserTable />
-            <Label className="text-xl font-semibold text-fuchsia-500 mx-auto ">List of Admins</Label>
-             <AdminTable />
           </div>
       </div>
      

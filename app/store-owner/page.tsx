@@ -1,8 +1,18 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import UserTable from './components/user-table'
-import { Button } from '@/components/ui/button'
+import { Button } from '../../components/ui/button'
 
 export default function StoreOwner() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if(token){
+      setIsAuthenticated(true);
+    }
+  })
+
   return (
     <div className='bg-[#0a0a0a] h-screen w-screen flex flex-col text-center'> 
 
@@ -11,8 +21,11 @@ export default function StoreOwner() {
         Hello, Welcome Back
         </div> 
         <div className='flex gap-4'>
-            <Button variant={"saas"}>Update Password</Button>
+            {isAuthenticated ?
             <Button variant={"saas"}>Logout</Button>
+            : 
+            <Button variant={'saas'}>Login</Button>
+           }
         </div>
       </div>
 
