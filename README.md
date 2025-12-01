@@ -17,28 +17,28 @@ A **full-stack Store Management application** built with **Next.js**, **Prisma**
 ## Screenshots
 
 ### Landing Page
-![Landing Page](/landing.png)
+![Landing Page](public/landing.png)
 
 ### Login Page 
-![Login Page](/login.png)
+![Login Page](public/login.png)
 
 ### Signup Page 
-![Signup Page](/signup.png)
+![Signup Page](public/signup.png)
 
 ### Admin Dashboard
-![Admin Dashboard](/admin-dashboard.png)
+![Admin Dashboard](public/admin-dashboard.png)
 
 ### User Dashboard
-![User Dashboard](/user-dashboard.png)
+![User Dashboard](public/user-dashboard.png)
 
 ### Store Owner 
-![Store Details](/store-owner.png)
+![Store Details](public/store-owner.png)
 
 ### Add User 
-![Add User](/add-user.png)
+![Add User](public/add-user.png)
 
 ### Add Store 
-![Add Store](/add-store.png)
+![Add Store](public/add-store.png)
 
 ---
 
