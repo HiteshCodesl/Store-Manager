@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prismaClient from "../../../config/prisma";
+import prisma from "../../../config/prisma";
 import { signinSchema } from "../../../config/zod";
 import { compare } from "../../../config/hash";
 import jwt from "jsonwebtoken";
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     }
     const { email, password } = parsed.data;
 
-    const user = await prismaClient.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prismaClient from "../../../../config/prisma";
+import prisma from "../../../../config/prisma";
 import { z } from "zod";
 
 const createUserSchema = z.object({
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const { name, email, password, role} = parsed.data;
 
-    const exists = await prismaClient.user.findUnique({
+    const exists = await prisma.user.findUnique({
       where: { email },
     });
 
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = await prismaClient.user.create({
+    const user = await prisma.user.create({
       data: {
         name,
         email,

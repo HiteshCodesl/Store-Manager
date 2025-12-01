@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"; 
-import prismaClient from "../../../config/prisma";
+import prisma from "../../../config/prisma";
 
 export async function POST(req: Request) {
   try {
@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "storeId and rating are required" }, { status: 400 }); 
     } 
 
-    const storeExists = await prismaClient.store.findUnique({ 
+    const storeExists = await prisma.store.findUnique({ 
       where: { id: Number(storeId) }, 
     }); 
 
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
         { status: 404 }); 
     }
 
-    const created = await prismaClient.rating.create({ data: { score: Number(rating), storeId: Number(storeId), }, }); 
+    const created = await prisma.rating.create({ data: { score: Number(rating), storeId: Number(storeId), }, }); 
 
     return NextResponse.json({ message: "Rating submitted successfully", created }, { status: 200 });
 
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const groups = await prismaClient.rating.groupBy({
+    const groups = await prisma.rating.groupBy({
       by: ["storeId"],
       _avg: { score: true },
       _count: { score: true },
@@ -49,7 +49,7 @@ export async function GET() {
       _sum: g._sum,
     }));
 
-    const stores = await prismaClient.store.findMany({
+    const stores = await prisma.store.findMany({
       orderBy: { createdAt: "asc" },
       select: {
         id: true,

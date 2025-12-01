@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismaClient from "../../../../config/prisma"; 
+import prisma from "../../../../config/prisma"; 
 export async function POST(req: Request) {
   try {
     const { storeName, storeEmail, storeAddress } = await req.json();
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const store = await prismaClient.store.create({
+    const store = await prisma.store.create({
       data: {
         name: storeName,
         email: storeEmail,

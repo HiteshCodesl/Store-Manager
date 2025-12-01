@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prismaClient from "../../../config/prisma";
+import prisma from "../../../config/prisma";
 import { signupSchema } from "../../../config/zod";
 import { hash } from "../../../config/hash";
 import jwt from "jsonwebtoken";
@@ -15,13 +15,13 @@ export async function POST(req: NextRequest) {
 
     const { name, email, password, address } = parsed.data;
     const role = "USER";
-    const existing = await prismaClient.user.findUnique({ where: { email } });
+    const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
       return NextResponse.json({ message: "Email already in use" }, { status: 400 });
     }
 
     const hashed = await hash(password);
-    const user = await prismaClient.user.create({
+    const user = await prisma.user.create({
       data: { name, email, password: hashed, address, role },
     });
 
