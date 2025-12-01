@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ errors: parsed.error.format() }, { status: 400 });
     }
 
-    const { name, email, password, address, role } = parsed.data;
+    const { name, email, password, address } = parsed.data;
     const existing = await prismaClient.user.findUnique({ where: { email } });
     if (existing) {
       return NextResponse.json({ message: "Email already in use" }, { status: 400 });
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     const hashed = await hash(password);
     const user = await prismaClient.user.create({
-      data: { name, email, password: hashed, address, role },
+      data: { name, email, password: hashed, address, role: "USER" },
     });
 
     const token = await jwt.sign({

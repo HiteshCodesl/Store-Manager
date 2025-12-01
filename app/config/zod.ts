@@ -8,7 +8,6 @@ export const signupSchema = z.object({
     .string()
     .min(6)
     .max(16),
-  role: z.string(),
 });
 
 export const signinSchema = z.object({

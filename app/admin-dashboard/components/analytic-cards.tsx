@@ -29,17 +29,17 @@ export function CardHoverEffectDemo() {
     <div className="max-w-4xl px-10 grid grid-cols-3 gap-4">
     {data && (
       <>
-        <Card className="p-6 flex flex-col items-center">
+        <Card className="p-6 flex flex-col items-center bg-violet-500">
           <h2 className="text-xl font-bold">Total Users</h2>
           <p className="text-2xl text-black font-bold">{data.totalUsers}</p>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-6 bg-violet-500">
           <h2 className="text-xl font-bold">Total Stores</h2>
           <p className="text-2xl text-black font-bold">{data.totalStores}</p>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-6 bg-violet-500">
           <h2 className="text-xl font-bold">Total Ratings</h2>
           <p className="text-2xl text-black font-bold">{data.totalRatings}</p>
         </Card>

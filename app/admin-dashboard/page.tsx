@@ -12,7 +12,8 @@ import { useRouter } from "next/navigation";
 export default function Dashboard() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-   
+  const [inputValue, setInputValue] = useState('');
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if(token){
@@ -29,7 +30,10 @@ export default function Dashboard() {
       <div className="flex flex-col gap-8 ">
           <div className="flex  mt-5 mx-5 gap-5 items-center">
            <div className="w-[70vw] ">
-              <Input placeholder="Search" className="text-white"/>
+              <Input
+               value={inputValue}
+               onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Search" className="text-white"/>
            </div>
            <div className="">
 
@@ -56,9 +60,9 @@ export default function Dashboard() {
 
           <div className="mt-5 flex flex-col gap-8 w-full">
             <Label className="text-xl font-semibold text-fuchsia-500 mx-auto ">List of Store</Label>
-            <StoreTable />
+            <StoreTable inputValue={inputValue} />
             <Label className="text-xl font-semibold text-fuchsia-500 mx-auto ">List of Users</Label>
-             <UserTable />
+             <UserTable inputValue={inputValue}/>
           </div>
       </div>
      

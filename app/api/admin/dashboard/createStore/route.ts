@@ -1,18 +1,17 @@
-import prisma from "../../../../config/prisma";
 import { NextResponse } from "next/server";
-
+import prismaClient from "../../../../config/prisma"; 
 export async function POST(req: Request) {
   try {
     const { storeName, storeEmail, storeAddress } = await req.json();
-
+    console.log(storeName, storeEmail, storeAddress);
     if (!storeName || !storeEmail || !storeAddress) {
       return NextResponse.json(
-        { error: "All fields (storeName, storeEmail, storeAddress) are required" },
+        { message: "name, email, and address are required" },
         { status: 400 }
       );
     }
 
-    const store = await prisma.store.create({
+    const store = await prismaClient.store.create({
       data: {
         name: storeName,
         email: storeEmail,
@@ -24,11 +23,10 @@ export async function POST(req: Request) {
       { message: "Store created successfully", store },
       { status: 201 }
     );
-
   } catch (error) {
-    console.error("Store creation error:", error);
+    console.error("Create store error:", error);
     return NextResponse.json(
-      { error: "Error creating store" },
+      { message: "Server error", error: error },
       { status: 500 }
     );
   }

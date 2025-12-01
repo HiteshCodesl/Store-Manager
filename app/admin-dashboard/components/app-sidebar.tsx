@@ -64,10 +64,10 @@ export default function Sidebar() {
     const [storeEmail, setStoreEmail] = useState('');
     const [storeAddress, setStoreAddress] = useState('');
 
-
     const createStore = async() => {
+      console.log("data", storeName, storeEmail, storeAddress)
        const response = await axios.post('/api/admin/dashboard/createStore', {storeName, storeEmail, storeAddress})
-
+       
        if(response){
         toast.success("Store added Successfully")
        }else{

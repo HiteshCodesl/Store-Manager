@@ -33,11 +33,10 @@ export default function Signup() {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
 
     const signupReq = async() => {
-      console.log(name, password, email, role, address)
-      const response = await axios.post(`/api/auth/signup`, {email, name, address, role, password});
+      console.log(name, password, email, address)
+      const response = await axios.post(`/api/auth/signup`, {email, name, address, password});
 
       if(response){
         const token = response.data.token;
@@ -107,17 +106,7 @@ export default function Signup() {
               <Input id="password" type="password" required placeholder="Enter a password"  value={password}
                 onChange={(e) => setPassword(e.target.value)}/>
             </div>
-             <div>
-               <Select onValueChange={(value) => setRole(value)} >
-                 <SelectTrigger className="w-[180px] flex">
-                 <SelectValue placeholder="Select Role"/>
-                 </SelectTrigger>
-                 <SelectContent>
-                  <SelectItem value="STORE_OWNER">Store Owner</SelectItem>
-                  <SelectItem value="USER">User</SelectItem>
-                 </SelectContent>
-               </Select>
-             </div>
+           
           </div>
         </form>
       </CardContent>

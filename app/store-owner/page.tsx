@@ -29,7 +29,7 @@ export default function StoreOwner() {
         </div>
       </div>
 
-      <div className='w-[85vw] flex text-center mx-auto mt-6'>
+      <div className='w-[85vw]  mx-auto mt-6'>
         <UserTable />
       </div>
     </div>
