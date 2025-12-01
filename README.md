@@ -32,7 +32,7 @@ A **full-stack Store Management application** built with **Next.js**, **Prisma**
 ![User Dashboard](public/user-dashboard.png)
 
 ### Store Owner 
-![Store Details](public/store-owner.png)
+![Store Details](public/store_owner.png)
 
 ### Add User 
 ![Add User](public/add-user.png)

@@ -26,51 +26,49 @@ export default function UserTable({inputValue}: {inputValue: string}) {
 
   const fetchUsers = async() => {
     const response = await axios.get('/api/users');
-
     if(response){
       setData(response.data);
+    }
   }
-}
 
   useEffect(() => {
     fetchUsers();
   }, [])
 
-   const filteredStores = useMemo(() => {
-        const query = inputValue?.trim().toLowerCase();
-        if (!query) return data;
-        return data?.filter((s) =>
-          (s.name ?? "").toLowerCase().includes(query) ||
-          (s.email ?? "").toLowerCase().includes(query)
-        );
-      }, [data, inputValue]);
+  const filteredUsers = useMemo(() => {
+    const query = inputValue?.trim().toLowerCase();
+    if (!query) return data;
+    return data?.filter((u) =>
+      (u.name ?? "").toLowerCase().includes(query) ||
+      (u.email ?? "").toLowerCase().includes(query)
+    );
+  }, [data, inputValue]);
 
   return (   
-    <div className="mx-10 w-full bg-purple-600 text-black">
-         <Table>
-      <TableCaption>A list of your Users</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="font-medium">Id</TableHead>
-          <TableHead className="font-medium">Name</TableHead>
-          <TableHead className="font-medium">Email</TableHead>
-          <TableHead className="font-medium">Role</TableHead>
-          <TableHead className="font-medium">CreatedAt</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {filteredStores.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell className="font-medium">{user.id}</TableCell>
-            <TableCell className="font-medium">{user.name}</TableCell>
-            <TableCell className="font-medium">{user.email}</TableCell>
-            <TableCell className="font-medium">{user.role}</TableCell>
-            <TableCell className="font-medium">{user.createdAt}</TableCell>
+    <div className="w-full overflow-x-auto">
+      <Table className="min-w-[600px] bg-purple-600 text-black">
+        <TableCaption>A list of your Users</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="font-medium">Id</TableHead>
+            <TableHead className="font-medium">Name</TableHead>
+            <TableHead className="font-medium">Email</TableHead>
+            <TableHead className="font-medium">Role</TableHead>
+            <TableHead className="font-medium">CreatedAt</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {filteredUsers.map((user) => (
+            <TableRow key={user.id}>
+              <TableCell className="font-medium">{user.id}</TableCell>
+              <TableCell className="font-medium">{user.name}</TableCell>
+              <TableCell className="font-medium">{user.email}</TableCell>
+              <TableCell className="font-medium">{user.role}</TableCell>
+              <TableCell className="font-medium">{user.createdAt}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
-      
   )
 }

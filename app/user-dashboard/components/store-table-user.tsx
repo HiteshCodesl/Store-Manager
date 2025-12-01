@@ -11,10 +11,8 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "../../../components/ui/dialog"
 
 import axios from "axios";
@@ -55,7 +53,7 @@ export default function StoreTableUser({search}: {search: string}) {
     console.log(storeId);
   }, [storeId]);
 
-    const filteredStores = useMemo(() => {
+  const filteredStores = useMemo(() => {
     const query = search?.trim().toLowerCase();
     if (!query) return stores;
     return stores.filter((s) =>
@@ -66,52 +64,72 @@ export default function StoreTableUser({search}: {search: string}) {
   }, [stores, search]);
 
   return (
-     <div className="mx-10 w-full bg-violet-500">
-        <Table className="">
-      <TableHeader>
-        <TableRow>
-          <TableHead className="font-medium">Id</TableHead>
-          <TableHead className="font-medium">Name</TableHead>
-          <TableHead className="font-medium">Email</TableHead>
-          <TableHead className="font-medium">Address</TableHead>
-          <TableHead className="font-medium">AVG Rating</TableHead>
-          <TableHead className="font-medium">Total Rating</TableHead>
-          <TableHead className="font-medium">Give Rating</TableHead>
-        
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {filteredStores.map((store) => (
-          <TableRow key={store.id}>
-            <TableCell className="font-medium">{store.id}</TableCell>
-            <TableCell className="font-medium">{store.name}</TableCell>
-            <TableCell className="font-medium">{store.email}</TableCell>
-            <TableCell className="font-medium">{store.address}</TableCell>
-            <TableCell className="font-medium">{store.averageRating}</TableCell>
-            <TableCell className="font-medium">{store.totalRatings}</TableCell>
-            <TableCell className="font-medium">
-               <Button onClick={() => {
-                setIsOpen(true)
-                setStoreId(store.id)
-                }} variant={'saas'} className="border border-black">give us Rating</Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="w-full px-4 sm:px-6 lg:px-0">
+      {/* horizontal scroll wrapper for small screens */}
+      <div className="w-full overflow-x-auto bg-violet-500 rounded-md">
+        <Table className="min-w-[800px]">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="font-medium">Id</TableHead>
+              <TableHead className="font-medium">Name</TableHead>
+              <TableHead className="font-medium">Email</TableHead>
+              <TableHead className="font-medium">Address</TableHead>
+              <TableHead className="font-medium">AVG Rating</TableHead>
+              <TableHead className="font-medium">Total Rating</TableHead>
+              <TableHead className="font-medium">Give Rating</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredStores.map((store) => (
+              <TableRow key={store.id}>
+                <TableCell className="font-medium">{store.id}</TableCell>
+                <TableCell className="font-medium">{store.name}</TableCell>
+                <TableCell className="font-medium">{store.email}</TableCell>
+                <TableCell className="font-medium">{store.address}</TableCell>
+                <TableCell className="font-medium">{store.averageRating}</TableCell>
+                <TableCell className="font-medium">{store.totalRatings}</TableCell>
+                <TableCell className="font-medium">
+                  <Button
+                    onClick={() => {
+                      setIsOpen(true)
+                      setStoreId(store.id)
+                    }}
+                    variant={'saas'}
+                    className="border border-black w-full sm:w-auto"
+                  >
+                    Give Rating
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
-    {isOpen && 
-     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle className="text-center font-bold text-purple-700">Give us a Rating</DialogTitle>
-       <Label className="mt-3">Enter your Rating</Label>
-       <Input value={rating} onChange={(e) => setRating(e.target.value)} type="number" max={5} />
-       <Button onClick={submitRating} variant={'saas'} className="text-white">Submit Rating</Button>
-    </DialogHeader>
-  </DialogContent>
-</Dialog>
-    }
-     </div>
+      {/* Dialog */}
+      {isOpen && 
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent className="max-w-sm mx-auto">
+            <DialogHeader>
+              <DialogTitle className="text-center font-bold text-purple-700">Give us a Rating</DialogTitle>
+
+              <div className="mt-3 flex flex-col gap-2">
+                <Label>Enter your Rating (0-5)</Label>
+                <Input
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                  type="number"
+                  max={5}
+                  className="w-full"
+                />
+                <Button onClick={submitRating} variant={'saas'} className="mt-2 w-full">
+                  Submit Rating
+                </Button>
+              </div>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      }
+    </div>
   )
 }

@@ -12,7 +12,6 @@ import {
 } from "../../../components/ui/table"
 import axios from "axios";
 
-
 export interface Store{
   id: number,
   name: string,
@@ -28,8 +27,6 @@ export default function StoreTable({inputValue}: {inputValue: string}) {
 
   const fetchStores = async() => {
     const response = await axios.get('/api/stores/rating');
-   
-  
     if(response){
       console.log("store data",response.data);
       setData(response.data);
@@ -40,46 +37,43 @@ export default function StoreTable({inputValue}: {inputValue: string}) {
     fetchStores();
   }, [])
 
-   const filteredStores = useMemo(() => {
-      const query = inputValue?.trim().toLowerCase();
-      if (!query) return data;
-      return data?.filter((s) =>
-        (s.name ?? "").toLowerCase().includes(query) ||
-        (s.email ?? "").toLowerCase().includes(query) ||
-        (s.address ?? "").toLowerCase().includes(query) 
-      );
-    }, [data, inputValue]);
-  
+  const filteredStores = useMemo(() => {
+    const query = inputValue?.trim().toLowerCase();
+    if (!query) return data;
+    return data?.filter((s) =>
+      (s.name ?? "").toLowerCase().includes(query) ||
+      (s.email ?? "").toLowerCase().includes(query) ||
+      (s.address ?? "").toLowerCase().includes(query) 
+    );
+  }, [data, inputValue]);
 
   return (
-     <div className="mx-10 w-full bg-purple-600 text-black">
-        <Table className="">
-      <TableCaption>A list of your recent invoices.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Id</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>AVG Rating</TableHead>
-           <TableHead>Total Rating</TableHead>
-          <TableHead>Address</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        
-        {filteredStores?.map((store) => (
-          <TableRow key={store.id}>
-             <TableCell className="font-medium">{store.id}</TableCell>
-            <TableCell className="font-medium">{store.name}</TableCell>
-            <TableCell className="font-medium">{store.email}</TableCell>
-            <TableCell className="font-medium">{store.averageRating}</TableCell>
-            <TableCell className="font-medium">{store.totalRatings}</TableCell>
-            <TableCell className="font-medium">{store.address}</TableCell>
+    <div className="w-full overflow-x-auto">
+      <Table className="min-w-[600px] bg-purple-600 text-black">
+        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Id</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>AVG Rating</TableHead>
+            <TableHead>Total Rating</TableHead>
+            <TableHead>Address</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-     
-    </Table>
-     </div>
+        </TableHeader>
+        <TableBody>
+          {filteredStores?.map((store) => (
+            <TableRow key={store.id}>
+              <TableCell className="font-medium">{store.id}</TableCell>
+              <TableCell className="font-medium">{store.name}</TableCell>
+              <TableCell className="font-medium">{store.email}</TableCell>
+              <TableCell className="font-medium">{store.averageRating}</TableCell>
+              <TableCell className="font-medium">{store.totalRatings}</TableCell>
+              <TableCell className="font-medium">{store.address}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   )
 }

@@ -21,8 +21,10 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const loginReq = async() => {
+    setIsLoading(true);
       const response = await axios.post('/api/auth/login', {email, password});
 
       if(response){
@@ -37,7 +39,9 @@ export default function Login() {
         else{
           router.push('/store-owner')
         }
+
       }
+      setIsLoading(false);
   }
 
   return (
@@ -75,7 +79,7 @@ export default function Login() {
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button onClick={loginReq}  variant={'saas'} type="submit" className="w-full">
+        <Button disabled={isLoading} onClick={loginReq}  variant={'saas'} type="submit" className="w-full">
           Login
         </Button>
         <div className="flex gap-2">

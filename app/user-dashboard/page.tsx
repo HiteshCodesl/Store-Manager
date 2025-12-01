@@ -11,41 +11,44 @@ export default function UserDashBoard() {
   const router = useRouter();
 
   useEffect(() => {
-   const token = localStorage.getItem('token');
-   if(token){
-    setIsAuthenticated(true);
-   }
+    const token = localStorage.getItem('token');
+    if(token){
+      setIsAuthenticated(true);
+    }
   }, [])
 
   return (
-    <div className="bg-[#0a0a0a] h-screen w-screen py-10  px-10 flex flex-col items-center">
+    <div className="bg-[#0a0a0a] min-h-screen w-full py-10 px-4 sm:px-6 lg:px-10 flex flex-col items-center">
+      
+      {/* Search & Login/Logout */}
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 w-full max-w-4xl items-center">
+        <Input 
+          value={searchItems} 
+          onChange={(e) => setSearchItems(e.target.value)} 
+          placeholder="Search" 
+          className="text-white flex-1"
+        />
 
-      <div className="flex gap-5 items-center">
-           <div className="w-[70vw] ">
-              <Input 
-              value={searchItems} 
-              onChange={(e) => setSearchItems(e.target.value)} placeholder="Search" className="text-white"/>
-           </div>
-           <div className="">
-             {isAuthenticated ?
-              <Button onClick={ () => {
-                localStorage.removeItem('token')
-                setIsAuthenticated(false)
-              }} variant={'saas'}>Logout</Button>
-             : <Button variant={'saas'} onClick={() => router.push('/login')}>
-                Login
-               </Button>
+        <Button 
+          onClick={() => {
+            if(isAuthenticated){
+              localStorage.removeItem('token');
+              setIsAuthenticated(false);
+            } else {
+              router.push('/login');
             }
-           </div>
-          
+          }} 
+          variant={'saas'}
+          className="w-full sm:w-auto"
+        >
+          {isAuthenticated ? 'Logout' : 'Login'}
+        </Button>
       </div>
 
-      <div className="flex flex-col mt-10 w-[90vw]">
-         <div className="mt-7 mx-10"> 
+      {/* Table Section */}
+      <div className="flex flex-col mt-10 w-full max-w-6xl">
         <StoreTableUser search={searchItems} />
-         </div>
       </div>
     </div>
   )
 }
-

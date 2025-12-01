@@ -33,9 +33,11 @@ export default function Signup() {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const signupReq = async() => {
-      console.log(name, password, email, address)
+      setIsLoading(true);
+      console.log("signup data",name, password, email, address)
       const response = await axios.post(`/api/auth/signup`, {email, name, address, password});
 
       if(response){
@@ -49,6 +51,7 @@ export default function Signup() {
           router.push('/store-owner')
         }
       }
+      setIsLoading(false);
     }
 
   return (
@@ -111,7 +114,7 @@ export default function Signup() {
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button onClick={signupReq} variant={"saas"} type="submit" className="w-full">
+        <Button disabled={isLoading} onClick={signupReq} variant={"saas"} type="submit" className="w-full">
           Signup
         </Button>
          <div className="flex gap-2">

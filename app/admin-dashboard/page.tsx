@@ -22,51 +22,63 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="bg-[#0a0a0a] w-screen  h-[210vh] flex">
-      <div className="p-4  border-r w-[15vw] h-[210vh]">
-       <Sidebar />
+    <div className="bg-[#0a0a0a] min-h-screen flex flex-col md:flex-row">
+      {/* Sidebar */}
+      <div className="p-4 border-b md:border-b-0 md:border-r w-full md:w-1/5">
+        <Sidebar />
       </div>
 
-      <div className="flex flex-col gap-8 ">
-          <div className="flex  mt-5 mx-5 gap-5 items-center">
-           <div className="w-[70vw] ">
-              <Input
-               value={inputValue}
-               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Search" className="text-white"/>
-           </div>
-           <div className="">
-
-            {isAuthenticated ?
-              <Button onClick={() => {
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col gap-6 p-4">
+        {/* Top bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
+          <Input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Search"
+            className="text-white w-full sm:w-3/4"
+          />
+          {isAuthenticated ? (
+            <Button
+              onClick={() => {
                 localStorage.removeItem('token');
                 setIsAuthenticated(false);
                 router.push('/');
-              }} variant={'saas'}>Logout</Button>
-              :
-              <Button 
-              variant={'saas'} 
-              onClick={() => router.push('/login')}>
-                Login
-              </Button>
-            }
+              }}
+              variant={'saas'}
+              className="w-full sm:w-auto"
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button
+              variant={'saas'}
+              onClick={() => router.push('/login')}
+              className="w-full sm:w-auto"
+            >
+              Login
+            </Button>
+          )}
+        </div>
 
-           </div>
-          </div>
-
-          <div className="flex text-center mx-auto">
+        {/* Analytics Cards */}
+        <div className="flex flex-wrap justify-center gap-4">
           <CardHoverEffectDemo />
-          </div>
+        </div>
 
-          <div className="mt-5 flex flex-col gap-8 w-full">
-            <Label className="text-xl font-semibold text-fuchsia-500 mx-auto ">List of Store</Label>
-            <StoreTable inputValue={inputValue} />
-            <Label className="text-xl font-semibold text-fuchsia-500 mx-auto ">List of Users</Label>
-             <UserTable inputValue={inputValue}/>
-          </div>
+        {/* Tables */}
+        <div className="flex flex-col gap-6 w-full">
+          <Label className="text-xl font-semibold text-fuchsia-500 text-center">
+            List of Store
+          </Label>
+          <StoreTable inputValue={inputValue} />
+
+          <Label className="text-xl font-semibold text-fuchsia-500 text-center">
+            List of Users
+          </Label>
+          <UserTable inputValue={inputValue}/>
+        </div>
       </div>
-     
     </div>
   )
 }
-
